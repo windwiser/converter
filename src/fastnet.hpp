@@ -11,7 +11,7 @@ uint8_t checksum(const uint8_t* ptr, uint8_t len) {
 }
 
 void sendWindData() {
-    constexpr uint8_t FRAME_LENGTH = 22;
+    constexpr uint8_t FRAME_LENGTH = 18;
 
     uint8_t frame[FRAME_LENGTH];
 
@@ -38,12 +38,6 @@ void sendWindData() {
     frame[14] = 0x08;
     frame[15] = 0x4E;
     frame[16] = 0x34;
-
-    // true wind
-    frame[17] = 0x59;
-    frame[18] = 0x01;
-    frame[19] = wind_angle >> 8; // wind angle
-    frame[20] = wind_angle;      // wind angle
 
     // !! ATTENTION !!
     // contrary to the docs, the last chx must round up to 0xAA rather than 0x100
