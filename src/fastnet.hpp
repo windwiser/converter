@@ -45,3 +45,70 @@ void sendWindData() {
 
     USART_SendBlocking(frame, FRAME_LENGTH);
 }
+
+void sendWindData2() {
+    constexpr uint8_t FRAME_LENGTH = 38;
+
+    uint8_t frame[FRAME_LENGTH];
+    uint8_t i = 0;
+
+    frame[i++] = 0xFF;             // start of frame
+    frame[i++] = 0x70;             // sender is wind sensor
+    frame[i++] = FRAME_LENGTH - 6; // data length
+    frame[i++] = 0x01;             // data command
+    frame[i++] = checksum(frame, 4);
+
+    // ?? battery volts
+    frame[i++] = 0x8D;
+    frame[i++] = 0x48;
+    frame[i++] = 0x00;
+    frame[i++] = 0x8F;
+
+    // ??
+    frame[i++] = 0x50;
+    frame[i++] = 0x88;
+    frame[i++] = 0x02;
+    frame[i++] = 0xFB;
+
+    // static wind speed, needed for autopilot
+    frame[i++] = 0x4E;
+    frame[i++] = 0x88;
+    frame[i++] = 0x03;
+    frame[i++] = 0x45;
+
+    int16_t wind_angle = model.getWindAngleDegrees();
+    frame[i++]         = 0x51;
+    frame[i++]         = 0x01;
+    frame[i++]         = wind_angle >> 8; // wind angle
+    frame[i++]         = wind_angle;      // wind angle
+
+    // raw wind pulses, needed for autopilot
+    frame[i++] = 0x52;
+    frame[i++] = 0x08;
+    frame[i++] = 0x4E;
+    frame[i++] = 0x34;
+
+    // ??
+    frame[i++] = 0x57;
+    frame[i++] = 0x88;
+    frame[i++] = 0x07;
+    frame[i++] = 0x5B;
+
+    // ?? TWA
+    frame[i++] = 0x59;
+    frame[i++] = 0x01;
+    frame[i++] = wind_angle >> 8; // wind angle
+    frame[i++] = wind_angle;      // wind angle
+
+    // ?? velocity made good
+    frame[i++] = 0x7F;
+    frame[i++] = 0x88;
+    frame[i++] = 0xFA;
+    frame[i++] = 0xA9;
+
+    // !! ATTENTION !!
+    // contrary to the docs, the last chx must round up to 0xAA rather than 0x100
+    frame[i++] = checksum(frame + 5, FRAME_LENGTH - 6) + 0xAA;
+
+    USART_SendBlocking(frame, FRAME_LENGTH);
+}
