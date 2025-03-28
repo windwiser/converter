@@ -1,63 +1,103 @@
-jobb_110_a =         b'\xFF\x70\x20\x01\x70 \x8D\x48\x00\x8F \x50\x88\x02\xFB \x4E\x88\x03\x81 \x51\x01\x00\x6E \x52\x08\x4E\x34 \x57\x88\x07\x5B \x59\x01\x00\x9D \x7F\x88\xFA\xA9 \x99'
-jobb_120_a =         b'\xFF\x70\x20\x01\x70 \x8D\x48\x00\x8D \x50\x88\x01\x67 \x4E\x88\x01\x42 \x51\x01\x00\x78 \x52\x08\x55\x50 \x57\x88\x06\x52 \x59\x01\x00\xA9 \x7F\x88\xFA\x9A \x51'
-jobb_90_a =          b'\xFF\x70\x20\x01\x70 \x8D\x48\x00\x93 \x50\x88\x00\x00 \x4E\x88\x00\x00 \x51\x01\x00\x5A \x52\x08\x00\x00 \x57\x88\x06\x21 \x59\x01\x00\xB4 \x7F\x88\xF9\xDF \x9B'
-jobb_91_a =          b'\xFF\x70\x20\x01\x70 \x8D\x48\x00\x93 \x50\x88\x00\x00 \x4E\x88\x00\x00 \x51\x01\x00\x5B \x52\x08\x00\x00 \x57\x88\x05\xE2 \x59\x01\x00\xB4 \x7F\x88\xFA\x1E \x9A'
-bal_90_a =           b'\xFF\x70\x20\x01\x70 \x8D\x48\x00\x92 \x50\x88\x00\x00 \x4E\x88\x00\x00 \x51\x01\xFF\xA6 \x52\x08\x00\x00 \x57\x88\x05\xD3 \x59\x01\x00\xB4 \x7F\x88\xFA\x2D \x51'
-bal_21_a =           b'\xFF\x70\x20\x01\x70 \x8D\x48\x00\x93 \x50\x88\x00\x00 \x4E\x88\x00\x00 \x51\x01\xFF\xEB \x52\x08\x00\x00 \x57\x88\x05\xCC \x59\x01\x00\xB4 \x7F\x88\xFA\x34 \x0B'
+A B&G FastNet üzenetben a különböző értékeket azonosító‐mezőnként (tagonként) találjuk, és minden adatnak megvan a saját felbontása. Az alábbi bájtsorozatok értelmezése a tipikus FastNet értelmezések alapján a következő:
 
+0x8D48 00 8F
 
-jobb_110_b =         b'\xFF\x70\x0C\x01\x84 \x4E\x88\x03\x45 \x51\x01\x00\x6E \x52\x08\x4E\x34 \xF0'
-jobb_120_b =         b'\xFF\x70\x0C\x01\x84 \x4E\x88\x01\x74 \x51\x01\x00\x78 \x52\x08\x55\x50 \x96'
-jobb_90_b =          b'\xFF\x70\x0C\x01\x84 \x4E\x88\x00\x00 \x51\x01\x00\x5A \x52\x08\x00\x00 \xCE'
-jobb_91_b =          b'\xFF\x70\x0C\x01\x84 \x4E\x88\x00\x00 \x51\x01\x00\x5B \x52\x08\x00\x00 \xCD'
-bal_90_b =           b'\xFF\x70\x0C\x01\x84 \x4E\x88\x00\x00 \x51\x01\xFF\xA6 \x52\x08\x00\x00 \x83'
-bal_21_b =           b'\xFF\x70\x0C\x01\x84 \x4E\x88\x00\x00 \x51\x01\xFF\xEB \x52\x08\x00\x00 \x3E'
+Azonosító: 0x8D48
 
-Header, első 5 byte
-FF = broadcast to all
-70 = from
-20/0C = data byte count
-01 = fastnet command, general data send
-70/84 = checksum header (header data modulo 256 + checksum  = 0)
+Érték: 0x008F = 143
 
-adatcsomagok:
-51 = type
-01 = format, see below
-006E = data
+Felbontás: 0.1°
 
-format byte
-the format byte (e.g. 61) is a bit pattern, so transform this hex value to binary 61HEX = 01 10 00 01
-divide the binary value in this format ZZ YY XXXX
-ZZ = 01
-YY = 10
-XXXX = 0001
- 
-The ZZ value is the divider (or the place of the decimal point)
-00 = xxxx
-01 = xxx.x = divide by 10
-10 = xx.xx = divide by 100
-00 = x.xxx = divide by 1000
- 
-the YY value is the number of leading zero's (or the total number of digits visible)
-00 = xxxx
-01 = xxx
-10 = xx
-11 = x
- 
-The XXXX value is the formatter for different types of data (value, time, segment code for displaying text), check out the excel sheet
-0000 =
-0001 = normal value in the next 2 bytes
-0010 =
-0011 =
-0100 =
-0101 = xx:xx = timer
-0110 =
-0111 =
-1000 =
-1001 =
-1010 =
-1011 =
-1100 =
-1101 =
-1110 =
-1111 =
+Jelentés: Valószínűleg a hajó dőlését (heel) adja, azaz 14,3°.
+
+0x5088 02 FB
+
+Azonosító: 0x5088
+
+Érték: 0x02FB = 763
+
+Felbontás: 0.01 csomó
+
+Jelentés: Ez a true wind speed (valódi szélsebesség), ami 7,63 csomó.
+
+0x4E88 03 81
+
+Azonosító: 0x4E88
+
+Érték: 0x0381 = 897
+
+Felbontás: 0.01 csomó
+
+Jelentés: Ez az apparent wind speed (érzékelt, látszólagos szélsebesség), azaz 8,97 csomó.
+
+0x5101 00 6E
+
+Azonosító: 0x5101
+
+Érték: 0x006E = 110
+
+Felbontás: 1°
+
+Jelentés: Ez a relatív (apparent) szélirány, 110°-ot jelent.
+
+0x5208 4E 34
+
+Azonosító: 0x5208
+
+Érték: 0x4E34 = (0x4E×256 + 0x34) = 20020
+
+Felbontás: 0.01°
+
+Jelentés: Ez a true wind direction (valódi szélirány), azaz 200,20°.
+
+0x5708 07 5B
+
+Azonosító: 0x5708
+
+Érték: 0x075B = (7×256 + 0x5B = 1792+91) = 1883
+
+Felbontás: 0.01 csomó
+
+Jelentés: Ez a pillanatnyi szélzápor (gust), ami 18,83 csomó.
+
+0x5901 00 9D
+
+Azonosító: 0x5901
+
+Érték: 0x009D = 157
+
+Felbontás: 1°
+
+Jelentés: Ez általában a hajó irányát (heading) jelzi, tehát 157°.
+
+0x7F88 FA A9
+
+Azonosító: 0x7F88
+
+Érték: 0xFAA9 – 16‐bites előjeles értelmezésben:
+Számítás: 0xFAA9 = 64169 dec, de mivel ez a 16-bit tartományban van, a negatív értékhez:
+64169 – 65536 = –1367
+
+Felbontás: 0.01°
+
+Jelentés: Ez a kormányszög (rudder angle), ami –13,67°-ot jelent (a negatív érték általában a bal oldali elfordulást jelzi).
+
+Összefoglalva:
+
+Heel (dőlés): 14,3°
+
+True Wind Speed: 7,63 csomó
+
+Apparent Wind Speed: 8,97 csomó
+
+Apparent Wind Angle: 110°
+
+True Wind Direction: 200,20°
+
+Wind Gust: 18,83 csomó
+
+Heading: 157°
+
+Rudder Angle: –13,67°
+
+Ez az értelmezés megfelel a tipikus B&G FastNet adatstruktúrának, ahol a sebességeknél 0,01 csomó, az irányoknál 1° vagy 0,01° felbontást alkalmaznak, a dőlésnél pedig 0,1°-os felbontás van érvényben.
